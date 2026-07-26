@@ -84,7 +84,8 @@ def create_note_file(
     folder_path: Path,
     title: str,
     task_id: str,
-    url: str
+    url: str,
+    requirements: str
 ) -> None:
     """
     Створює markdown-файл на основі шаблону.
@@ -104,9 +105,10 @@ def create_note_file(
     now_value = obsidian_datetime()
 
     replacements = {
-        "{{ title }}": title,
+        "{{ title }}": title if not url else f"[{title}]({url})",
         "{{ task_id }}": task_id,
         "{{ url }}": url,
+        "{{ requirements }}": requirements,
         "{{ created_at }}": now_value,
         "{{ updated_at }}": now_value,
     }
@@ -377,6 +379,10 @@ class CreateTaskDialog:
             task_id = self.id_var.get().strip()
             url = self.url_var.get().strip()
             title = self.title_var.get().strip()
+            requirements = self.requirements_text.get(
+                "1.0",
+                tk.END
+            ).strip()
 
             if not date_text:
                 raise ValueError(
@@ -417,7 +423,8 @@ class CreateTaskDialog:
                 folder_path=folder_path,
                 title=title,
                 task_id=task_id,
-                url=url
+                url=url,
+                requirements=requirements
             )
 
             messagebox.showinfo(

@@ -9,14 +9,6 @@ priority: normal
 
 # {{ title }}
 
-## Заявка
-
-**ID:** {{ task_id }}
-
-**URL:** [Відкрити задачу]({{ url }})
-
-**Статус:** backlog
-
 ## Вимоги
 
 {{ requirements }}
