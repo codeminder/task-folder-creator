@@ -146,61 +146,92 @@ class CreateTaskDialog:
 
     def create_widgets(self):
         padding = {"padx": 8, "pady": 4}
-        
-        # Поле Дата
-        tk.Label(
-            self.root,
-            text="Дата (YYYY-MM-DD)*"
-        ).grid(
+
+        # ==============================================================
+        # Заголовок задачі
+        # ==============================================================
+
+        title_frame = tk.Frame(self.root)
+        title_frame.grid(
             row=0,
             column=0,
+            columnspan=4,
             sticky="w",
-            **padding
+            padx=8,
+            pady=(8, 4)
         )
 
-        self.date_var = tk.StringVar(
-            value=datetime.now().strftime("%Y-%m-%d")
-        )
-
-        tk.Entry(
-            self.root,
-            textvariable=self.date_var,
-            width=40
-        ).grid(
-            row=0,
-            column=1,
-            **padding
-        )
-
-        # Поле ID заявки
         tk.Label(
+            title_frame,
+            text="📝 Заголовок",
+            font=("Segoe UI", 9, "bold")
+        ).pack(side=tk.LEFT)
+
+        tk.Label(
+            title_frame,
+            text=" *",
+            fg="red",
+            font=("Segoe UI", 10, "bold")
+        ).pack(side=tk.LEFT)
+
+        self.title_var = tk.StringVar()
+
+        title_entry = tk.Entry(
             self.root,
-            text="ID заявки"
-        ).grid(
+            textvariable=self.title_var,
+            width=80
+        )
+
+        title_entry.grid(
             row=1,
             column=0,
-            sticky="w",
+            columnspan=4,
+            sticky="ew",
             **padding
         )
 
-        self.id_var = tk.StringVar()
+        title_entry.focus_set()
 
-        tk.Entry(
-            self.root,
-            textvariable=self.id_var,
-            width=40
-        ).grid(
-            row=1,
-            column=1,
-            **padding
-        )
-    
-        # Поле URL
+        # ==============================================================
+        # Вимоги
+        # ==============================================================
+
         tk.Label(
             self.root,
-            text="URL"
+            text="📋 Вимоги",
+            font=("Segoe UI", 9, "bold")
         ).grid(
             row=2,
+            column=0,
+            sticky="w",
+            **padding
+        )
+
+        self.requirements_text = tk.Text(
+            self.root,
+            width=80,
+            height=10,
+            wrap="word"
+        )
+
+        self.requirements_text.grid(
+            row=3,
+            column=0,
+            columnspan=4,
+            sticky="ew",
+            **padding
+        )
+
+        # ==============================================================
+        # URL заявки
+        # ==============================================================
+
+        tk.Label(
+            self.root,
+            text="🔗 URL",
+            font=("Segoe UI", 9, "bold")
+        ).grid(
+            row=4,
             column=0,
             sticky="w",
             **padding
@@ -211,77 +242,99 @@ class CreateTaskDialog:
         tk.Entry(
             self.root,
             textvariable=self.url_var,
-            width=40
+            width=80
         ).grid(
-            row=2,
-            column=1,
-            **padding
-        )
-        
-        # Поле Вимоги
-        tk.Label(
-        self.root,
-            text="Вимоги"
-        ).grid(
-            row=3,
+            row=5,
             column=0,
-            sticky="nw",
+            columnspan=4,
+            sticky="ew",
             **padding
         )
 
-        self.requirements_text = tk.Text(
-            self.root,
-            width=60,
-            height=8
-        )
+        # ==============================================================
+        # ID заявки та дата в одному рядку
+        # ==============================================================
 
-        self.requirements_text.grid(
-            row=3,
-            column=1,
-            **padding
-        )
-
-        # Поле заголовок
         tk.Label(
             self.root,
-            text="Заголовок*"
+            text="🎫 ID заявки",
+            font=("Segoe UI", 9, "bold")
         ).grid(
-            row=3,
+            row=6,
             column=0,
             sticky="w",
             **padding
         )
 
-        self.title_var = tk.StringVar()
+        self.id_var = tk.StringVar()
 
-        title_entry = tk.Entry(
+        tk.Entry(
             self.root,
-            textvariable=self.title_var,
-            width=40
-        )
-
-        title_entry.grid(
-            row=3,
+            textvariable=self.id_var,
+            width=25
+        ).grid(
+            row=6,
             column=1,
+            sticky="w",
             **padding
         )
 
-        title_entry.focus_set()
+        date_label_frame = tk.Frame(self.root)
 
-        # Рамка кнопок
+        date_label_frame.grid(
+            row=6,
+            column=2,
+            sticky="e",
+            padx=8
+        )
+
+        tk.Label(
+            date_label_frame,
+            text="📅 Дата",
+            font=("Segoe UI", 9, "bold")
+        ).pack(side=tk.LEFT)
+
+        tk.Label(
+            date_label_frame,
+            text=" *",
+            fg="red",
+            font=("Segoe UI", 10, "bold")
+        ).pack(side=tk.LEFT)
+
+        self.date_var = tk.StringVar(
+            value=datetime.now().strftime("%Y-%m-%d")
+        )
+
+        tk.Entry(
+            self.root,
+            textvariable=self.date_var,
+            width=15
+        ).grid(
+            row=6,
+            column=3,
+            sticky="w",
+            **padding
+        )
+
+        # ==============================================================
+        # Кнопки керування
+        # ==============================================================
+
         button_frame = tk.Frame(self.root)
+
         button_frame.grid(
-            row=4,
+            row=7,
             column=0,
-            columnspan=2,
-            pady=10
+            columnspan=4,
+            pady=(10, 4)
         )
 
         tk.Button(
             button_frame,
-            text="Створити",
-            width=15,
-            command=self.create
+            text="✅ Створити",
+            width=18,
+            command=self.create,
+            bg="#dff0d8"
         ).pack(
             side=tk.LEFT,
             padx=5
@@ -289,12 +342,30 @@ class CreateTaskDialog:
 
         tk.Button(
             button_frame,
-            text="Відмінити",
-            width=15,
+            text="❌ Відмінити",
+            width=18,
             command=self.cancel
         ).pack(
             side=tk.LEFT,
             padx=5
+        )
+
+        # ==============================================================
+        # Пояснення обов'язкових полів
+        # ==============================================================
+
+        tk.Label(
+            self.root,
+            text="* — обов'язкове поле",
+            fg="red",
+            font=("Segoe UI", 8)
+        ).grid(
+            row=8,
+            column=0,
+            columnspan=4,
+            sticky="w",
+            padx=8,
+            pady=(0, 8)
         )
 
     def cancel(self):
