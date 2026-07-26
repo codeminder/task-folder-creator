@@ -85,3 +85,4 @@ workspace/
 
 # Конфігурація користувача
 config.local.py
+config.ini
