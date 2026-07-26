@@ -11,8 +11,25 @@ from tkinter import messagebox
 # НАЛАШТУВАННЯ
 # ============================================================================
 
-BASE_DIRECTORY = r"./workspace"
-TEMPLATE_FILE = r"./template/task.md"
+from configparser import ConfigParser
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+config = ConfigParser()
+config.read(
+    SCRIPT_DIR / "config.ini",
+    encoding="utf-8"
+)
+
+BASE_DIRECTORY = config.get(
+    "paths",
+    "base_directory"
+)
+
+TEMPLATE_FILE = config.get(
+    "paths",
+    "template_file"
+)
 
 
 # Заборонені символи для імен файлів/каталогів Windows
