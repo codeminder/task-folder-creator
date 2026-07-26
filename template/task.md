@@ -13,11 +13,13 @@ priority: normal
 
 **ID:** {{ task_id }}
 
+**URL:** [Відкрити задачу]({{ url }})
+
 **Статус:** backlog
 
 ## Вимоги
 
--
+{{ requirements }}
 
 ## Аналіз
 

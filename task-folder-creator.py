@@ -83,7 +83,8 @@ def build_folder_name(
 def create_note_file(
     folder_path: Path,
     title: str,
-    task_id: str
+    task_id: str,
+    url: str
 ) -> None:
     """
     Створює markdown-файл на основі шаблону.
@@ -105,6 +106,7 @@ def create_note_file(
     replacements = {
         "{{ title }}": title,
         "{{ task_id }}": task_id,
+        "{{ url }}": url,
         "{{ created_at }}": now_value,
         "{{ updated_at }}": now_value,
     }
@@ -144,7 +146,8 @@ class CreateTaskDialog:
 
     def create_widgets(self):
         padding = {"padx": 8, "pady": 4}
-
+        
+        # Поле Дата
         tk.Label(
             self.root,
             text="Дата (YYYY-MM-DD)*"
@@ -169,6 +172,7 @@ class CreateTaskDialog:
             **padding
         )
 
+        # Поле ID заявки
         tk.Label(
             self.root,
             text="ID заявки"
@@ -190,12 +194,59 @@ class CreateTaskDialog:
             column=1,
             **padding
         )
+    
+        # Поле URL
+        tk.Label(
+            self.root,
+            text="URL"
+        ).grid(
+            row=2,
+            column=0,
+            sticky="w",
+            **padding
+        )
 
+        self.url_var = tk.StringVar()
+
+        tk.Entry(
+            self.root,
+            textvariable=self.url_var,
+            width=40
+        ).grid(
+            row=2,
+            column=1,
+            **padding
+        )
+        
+        # Поле Вимоги
+        tk.Label(
+        self.root,
+            text="Вимоги"
+        ).grid(
+            row=3,
+            column=0,
+            sticky="nw",
+            **padding
+        )
+
+        self.requirements_text = tk.Text(
+            self.root,
+            width=60,
+            height=8
+        )
+
+        self.requirements_text.grid(
+            row=3,
+            column=1,
+            **padding
+        )
+
+        # Поле заголовок
         tk.Label(
             self.root,
             text="Заголовок*"
         ).grid(
-            row=2,
+            row=3,
             column=0,
             sticky="w",
             **padding
@@ -210,16 +261,17 @@ class CreateTaskDialog:
         )
 
         title_entry.grid(
-            row=2,
+            row=3,
             column=1,
             **padding
         )
 
         title_entry.focus_set()
 
+        # Рамка кнопок
         button_frame = tk.Frame(self.root)
         button_frame.grid(
-            row=3,
+            row=4,
             column=0,
             columnspan=2,
             pady=10
@@ -252,6 +304,7 @@ class CreateTaskDialog:
         try:
             date_text = self.date_var.get().strip()
             task_id = self.id_var.get().strip()
+            url = self.url_var.get().strip()
             title = self.title_var.get().strip()
 
             if not date_text:
@@ -292,7 +345,8 @@ class CreateTaskDialog:
             create_note_file(
                 folder_path=folder_path,
                 title=title,
-                task_id=task_id
+                task_id=task_id,
+                url=url
             )
 
             messagebox.showinfo(
