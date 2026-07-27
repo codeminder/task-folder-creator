@@ -161,7 +161,7 @@ class CreateTaskDialog:
         self.create_widgets()
 
         self.root.bind("<Escape>", lambda e: self.cancel())
-        self.root.bind("<Return>", lambda e: self.create())
+        # self.root.bind("<Return>", lambda e: self.create())
 
     def create_widgets(self):
         padding = {"padx": 8, "pady": 4}
@@ -226,19 +226,42 @@ class CreateTaskDialog:
             **padding
         )
 
-        self.requirements_text = tk.Text(
-            self.root,
-            width=80,
-            height=10,
-            wrap="word"
-        )
+        requirements_frame = tk.Frame(self.root)
 
-        self.requirements_text.grid(
+        requirements_frame.grid(
             row=3,
             column=0,
             columnspan=4,
-            sticky="ew",
+            sticky="nsew",
             **padding
+        )
+
+        requirements_scrollbar = tk.Scrollbar(
+            requirements_frame,
+            orient="vertical"
+        )
+
+        requirements_scrollbar.pack(
+            side=tk.RIGHT,
+            fill=tk.Y
+        )
+
+        self.requirements_text = tk.Text(
+            requirements_frame,
+            width=80,
+            height=10,
+            wrap="word",
+            yscrollcommand=requirements_scrollbar.set
+        )
+
+        self.requirements_text.pack(
+            side=tk.LEFT,
+            fill=tk.BOTH,
+            expand=True
+        )
+
+        requirements_scrollbar.config(
+            command=self.requirements_text.yview
         )
 
         # ==============================================================
