@@ -452,6 +452,32 @@ class CreateTaskDialog:
                     f"Не знайдено каталог:\n{base_path}"
                 )
 
+            existing_tasks = find_existing_tasks(
+                base_path,
+                title
+            )
+
+            if existing_tasks:
+
+                task_list = "\n".join(
+                    f"• {task}"
+                    for task in existing_tasks
+                )
+
+                answer = messagebox.askyesno(
+                    title="Підтвердження створення",
+                    message=(
+                        "Папка з таким найменуванням задачі уже існує.\n\n"
+                        "Знайдені папки:\n\n"
+                        f"{task_list}\n\n"
+                        "Бажаєте створити ще одну?"
+                    ),
+                    default=messagebox.NO
+                )
+
+                if not answer:
+                    return
+            
             folder_path = base_path / folder_name
 
             folder_path.mkdir(
@@ -479,6 +505,17 @@ class CreateTaskDialog:
                 "Помилка",
                 str(exc)
             )
+            
+def find_existing_tasks(base_path: Path, title: str) -> list:
+    
+    safe_title = sanitize_name(title)
+
+    return [
+        item.name
+        for item in base_path.iterdir()
+        if item.is_dir()
+        and item.name.endswith(f"-{safe_title}")
+    ]
 
 
 # ============================================================================
